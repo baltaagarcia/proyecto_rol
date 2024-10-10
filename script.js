@@ -50,8 +50,18 @@ function mostrarInfo() {
     document.getElementById('nombre').innerText = `Nombre: ${personaje.nombre}`;
     document.getElementById('clase').innerText = `Clase: ${personaje.clase}`;
     document.getElementById('salud').innerText = `Salud: ${personaje.salud}`;
-    document.getElementById('inventario').innerText = `Inventario: ${personaje.inventario.join(', ')}`;
+    
+    const inventarioDiv = document.getElementById('inventario');
+    inventarioDiv.innerHTML = 'Inventario: ';
+    
+    personaje.inventario.forEach((item, index) => {
+        const potionButton = document.createElement('button');
+        potionButton.innerText = item;
+        potionButton.onclick = usarPocion; // Asocia la función al botón
+        inventarioDiv.appendChild(potionButton);
+    });
 }
+
 
 // Lógica de ataque (solo un ejemplo simple)
 document.getElementById('atacarBtn').addEventListener('click', () => {
@@ -120,6 +130,11 @@ function agregarAreaVisitada() {
 }
 
 // Función para comprobar si un objeto está en el área visible
+/**
+ * 
+ * @param {*} objeto 
+ * @returns 
+ */
 function estaEnAreaVisible(objeto) {
     return (
         objeto.x + 50 > personaje.x - personaje.rangoVisibilidad &&
@@ -182,3 +197,23 @@ pocion.img.onload = () => {
     imagenesCargadas++;
     if (imagenesCargadas === 3) iniciarJuego();
 };
+function usarPocion() {
+    if (personaje.inventario.includes('Poción')) {
+        personaje.salud += 20; // Aumenta la salud en 20
+        personaje.inventario.splice(personaje.inventario.indexOf('Poción'), 1); // Elimina una poción del inventario
+        mostrarInfo(); // Actualiza la información en pantalla
+    }
+}
+
+document.getElementById('confirmarNombreBtn').addEventListener('click', () => {
+    const nombreUsuario = document.getElementById('nombreInput').value;
+    if (nombreUsuario) {
+        personaje.nombre = nombreUsuario; // Asigna el nombre ingresado
+        document.getElementById('nombreForm').style.display = 'none'; // Oculta el formulario
+        document.getElementById('container').style.display = 'flex'; // Muestra el juego
+        mostrarInfo(); // Muestra la información del personaje
+        dibujar(); // Inicia el juego
+    } else {
+        alert("Por favor, ingresa un nombre."); // Mensaje de error si el nombre está vacío
+    }
+});

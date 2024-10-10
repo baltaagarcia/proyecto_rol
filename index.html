@@ -7,7 +7,12 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="container">
+    <div id="nombreForm">
+        <label for="nombreInput">Ingresa el nombre de tu guerrero:</label>
+        <input type="text" id="nombreInput" placeholder="Heroe">
+        <button id="confirmarNombreBtn">Confirmar</button>
+    </div>
+    <div id="container" style="display: none;"> <!-- Ocultar el juego hasta que se ingrese el nombre -->
         <canvas id="gameCanvas" width="800" height="600"></canvas>
         <div id="info">
             <div id="nombre"></div>
@@ -19,4 +24,5 @@
     </div>
     <script src="script.js"></script>
 </body>
+
 </html>
