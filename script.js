@@ -15,7 +15,8 @@ const personaje = {
     x: 100,
     y: 100,
     velocidad: 5,
-    rangoVisibilidad: 150 // Rango de visión
+    rangoVisibilidad: 150, // Rango de visión
+    inventario: [] // Inventario del personaje
 };
 
 // Inicializa datos del enemigo
@@ -27,9 +28,19 @@ const enemigo = {
     y: 300,
 };
 
+// Inicializa datos de la poción
+const pocion = {
+    img: new Image(),
+    x: Math.random() * mapaWidth, // Posición aleatoria en el mapa
+    y: Math.random() * mapaHeight,
+    width: 30,
+    height: 30
+};
+
 // Carga las imágenes
-personaje.img.src = './recursos/personaje_guerrero1.png';
+personaje.img.src = './recursos/personaje_guerrero1.png';;
 enemigo.img.src = './recursos/personaje_ogro.png';
+pocion.img.src = './recursos/item_corazon.png';
 
 // Mapa para registrar áreas visitadas
 const mapaVisitado = [];
@@ -39,6 +50,7 @@ function mostrarInfo() {
     document.getElementById('nombre').innerText = `Nombre: ${personaje.nombre}`;
     document.getElementById('clase').innerText = `Clase: ${personaje.clase}`;
     document.getElementById('salud').innerText = `Salud: ${personaje.salud}`;
+    document.getElementById('inventario').innerText = `Inventario: ${personaje.inventario.join(', ')}`;
 }
 
 // Lógica de ataque (solo un ejemplo simple)
@@ -59,7 +71,7 @@ function dibujar() {
     ctx.fillRect(0, 0, mapaWidth, mapaHeight); // Dibuja el mapa
 
     // Dibuja las áreas visitadas
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.5)'; // Color de las áreas visitadas
+    ctx.fillStyle = 'rgba(200, 255, 200, 0.5)'; // Color de las áreas visitadas
     for (let area of mapaVisitado) {
         ctx.fillRect(area.x, area.y, area.width, area.height);
     }
@@ -81,6 +93,9 @@ function dibujar() {
     if (estaEnAreaVisible(enemigo)) {
         ctx.drawImage(enemigo.img, enemigo.x, enemigo.y, 50, 50);
     }
+
+    // Dibuja la poción si está visible
+    ctx.drawImage(pocion.img, pocion.x, pocion.y, pocion.width, pocion.height);
 }
 
 // Función para agregar área visitada
@@ -114,6 +129,22 @@ function estaEnAreaVisible(objeto) {
     );
 }
 
+// Función para comprobar si el personaje recoge la poción
+function recogerPocion() {
+    if (
+        personaje.x < pocion.x + pocion.width &&
+        personaje.x + 50 > pocion.x &&
+        personaje.y < pocion.y + pocion.height &&
+        personaje.y + 50 > pocion.y
+    ) {
+        personaje.inventario.push('Poción'); // Agrega la poción al inventario
+        // Reubica la poción en una nueva posición aleatoria
+        pocion.x = Math.random() * (mapaWidth - pocion.width);
+        pocion.y = Math.random() * (mapaHeight - pocion.height);
+        mostrarInfo(); // Actualiza la información del inventario
+    }
+}
+
 // Manejo de eventos de teclado
 document.addEventListener('keydown', (event) => {
     switch (event.key) {
@@ -130,6 +161,7 @@ document.addEventListener('keydown', (event) => {
             personaje.x += personaje.velocidad;
             break;
     }
+    recogerPocion(); // Verifica si recoge la poción después de moverse
     dibujar();
 });
 
@@ -138,10 +170,15 @@ let imagenesCargadas = 0;
 
 personaje.img.onload = () => {
     imagenesCargadas++;
-    if (imagenesCargadas === 2) iniciarJuego(); // Inicia el juego cuando ambas imágenes estén listas
+    if (imagenesCargadas === 3) iniciarJuego(); // Inicia el juego cuando todas las imágenes estén listas
 };
 
 enemigo.img.onload = () => {
     imagenesCargadas++;
-    if (imagenesCargadas === 2) iniciarJuego();
+    if (imagenesCargadas === 3) iniciarJuego();
+};
+
+pocion.img.onload = () => {
+    imagenesCargadas++;
+    if (imagenesCargadas === 3) iniciarJuego();
 };

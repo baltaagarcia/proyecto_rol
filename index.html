@@ -4,18 +4,69 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Juego de Rol</title>
-    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; /* Alinear al inicio verticalmente */
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+        }
+
+        #container {
+            display: flex; /* Usar flexbox para alinear el canvas y la info */
+        }
+
+        #gameCanvas {
+            border: 2px solid #000;
+            background-color: #e0e0e0; /* Color de fondo del canvas */
+            margin-right: 20px; /* Espacio entre el canvas y la información */
+        }
+
+        #info {
+            background-color: #fff;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            text-align: left;
+            width: 300px;
+        }
+
+        #info div {
+            margin-bottom: 5px;
+        }
+
+        #inventario {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            background-color: #4CAF50; /* Color de fondo del botón */
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #45a049; /* Color del botón al pasar el mouse */
+        }
+    </style>
 </head>
 <body>
-    <div id="game-container">
+    <div id="container">
         <canvas id="gameCanvas" width="800" height="600"></canvas>
-        <div id="info-panel">
-            <h2>Información del Personaje</h2>
-            <p id="nombre">Nombre: </p>
-            <p id="clase">Clase: </p>
-            <p id="salud">Salud: </p>
+        <div id="info">
+            <div id="nombre"></div>
+            <div id="clase"></div>
+            <div id="salud"></div>
+            <div id="inventario">Inventario: []</div>
             <button id="atacarBtn">Atacar</button>
-            <button id="usarObjetoBtn">Usar Objeto</button>
         </div>
     </div>
     <script src="script.js"></script>
